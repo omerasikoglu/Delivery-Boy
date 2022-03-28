@@ -1,0 +1,40 @@
+{
+    "name": "Player",
+    "maps": [
+        {
+            "name": "Touch",
+            "id": "55ae2a55-d5b5-4a0d-b40e-275311431796",
+            "actions": [
+                {
+                    "name": "New action1",
+                    "type": "Value",
+                    "id": "ec6a3b43-fb6e-4bbf-aa1f-aed28de61f96",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e4036611-506b-43ca-a7b5-ee5b96bf52d8",
+                    "path": "<Touchscreen>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "TouchScheme",
+                    "action": "New action1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "TouchScheme",
+            "bindingGroup": "TouchScheme",
+            "devices": []
+        }
+    ]
+}
