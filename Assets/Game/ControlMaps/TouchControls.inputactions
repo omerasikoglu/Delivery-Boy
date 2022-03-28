@@ -1,5 +1,5 @@
 {
-    "name": "Player",
+    "name": "TouchControls",
     "maps": [
         {
             "name": "Touch",
@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "TouchContact",
+                    "name": "PrimaryTouchContact",
                     "type": "Button",
                     "id": "ecf98b48-514d-45d3-b5f6-5b2cc30df3ae",
                     "expectedControlType": "Button",
@@ -52,7 +52,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "TouchScheme",
-                    "action": "TouchContact",
+                    "action": "PrimaryTouchContact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
