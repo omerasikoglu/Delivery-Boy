@@ -6,16 +6,7 @@
             "id": "55ae2a55-d5b5-4a0d-b40e-275311431796",
             "actions": [
                 {
-                    "name": "PrimaryTouch",
-                    "type": "Value",
-                    "id": "b32df3c0-2d61-403f-bb5b-05259ce4ca3d",
-                    "expectedControlType": "Touch",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "PrimaryTouchContact",
+                    "name": "TouchScreen",
                     "type": "Button",
                     "id": "ecf98b48-514d-45d3-b5f6-5b2cc30df3ae",
                     "expectedControlType": "Button",
@@ -24,13 +15,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PrimaryTouchPosition",
+                    "name": "TouchPosition",
                     "type": "PassThrough",
                     "id": "ec6a3b43-fb6e-4bbf-aa1f-aed28de61f96",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Swerve",
+                    "type": "Value",
+                    "id": "3ead7564-6fac-4ffc-973d-73ef65979b16",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -41,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "TouchScheme",
-                    "action": "PrimaryTouchPosition",
+                    "action": "TouchPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -52,18 +52,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "TouchScheme",
-                    "action": "PrimaryTouchContact",
+                    "action": "TouchScreen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "175a0f00-d709-4b71-8b32-e29b89cee42d",
-                    "path": "<Touchscreen>/primaryTouch",
+                    "id": "3da27246-4c21-4701-819c-7b41b1380b54",
+                    "path": "<Touchscreen>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "TouchScheme",
-                    "action": "PrimaryTouch",
+                    "action": "Swerve",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
