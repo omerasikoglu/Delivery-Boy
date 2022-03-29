@@ -8,29 +8,21 @@ using UnityEngine.InputSystem;
 [DefaultExecutionOrder(-1)]
 public class InputManager : Singleton<InputManager>
 {
-    public event Action<Vector2, float> OnTouchActionStarted; //position and start time
-    public event Action<Vector2, float> OnTouchActionPerformed;
-    public event Action<Vector2, float> OnTouchActionEnded;
+    public event Action<Vector2> OnTouchActionStarted; //position
+    public event Action<Vector2> OnTouchActionPerformed;
+    public event Action<Vector2> OnTouchActionEnded;
 
-    public event Action<Vector2, float> OnSwerveStarted;
+    public event Action<Vector2> OnSwervePerformed; //swerve amount
 
-    private TouchControlMap touchControls;
+    private TouchControlMap touchControlMap;
 
     private void Awake()
     {
-        touchControls = new TouchControlMap();
+        touchControlMap = new TouchControlMap();
     }
 
-    private void OnEnable()
-    {
-        touchControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        touchControls.Disable();
-    }
-
+    private void OnEnable() => touchControlMap.Enable();
+    private void OnDisable() => touchControlMap.Disable();
     private void Start()
     {
         Observer();
@@ -38,46 +30,43 @@ public class InputManager : Singleton<InputManager>
 
     private void Observer()
     {
-        //touchControls.Touch.PrimaryTouchContact.started += ctx => StartTouch(ctx);
-        touchControls.Touch.Touch.started += StartTouch;
-        touchControls.Touch.Touch.performed += PerformTouch; //önceki pozisyonu, bi önceki tap'ta
-        touchControls.Touch.Touch.canceled += CancelTouch;
+        //touchControlMap.Touch.PrimaryTouchContact.started += ctx => StartTouch(ctx);
+        touchControlMap.Touch.Touch.started += StartTouch;
+        touchControlMap.Touch.Touch.performed += PerformTouch; //önceki pozisyonu, bi önceki tap'ta
+        touchControlMap.Touch.Touch.canceled += CancelTouch;
 
-        touchControls.Touch.Swerve.started += StartSwerve;
+        touchControlMap.Touch.Swerve.performed += PerformSwerve;
 
     }
-
 
     private void StartTouch(InputAction.CallbackContext context)
     {
-        if (float.IsPositiveInfinity(touchControls.Touch.Touch.ReadValue<Vector2>().x)) return;
-        if (float.IsNegativeInfinity(touchControls.Touch.Touch.ReadValue<Vector2>().x)) return;
+        if (float.IsPositiveInfinity(touchControlMap.Touch.Touch.ReadValue<Vector2>().x)) return;
+        if (float.IsNegativeInfinity(touchControlMap.Touch.Touch.ReadValue<Vector2>().x)) return;
 
-        //Debug.Log("started" + touchControls.Touch.PrimaryTouchPosition.ReadValue<Vector2>());
-
-        OnTouchActionStarted?.Invoke(touchControls.Touch.Touch.ReadValue<Vector2>(), (float)context.startTime);
+        OnTouchActionStarted?.Invoke(touchControlMap.Touch.Touch.ReadValue<Vector2>());
     }
     private void PerformTouch(InputAction.CallbackContext context)
     {
-        if (float.IsPositiveInfinity(touchControls.Touch.Touch.ReadValue<Vector2>().x)) return;
-        if (float.IsNegativeInfinity(touchControls.Touch.Touch.ReadValue<Vector2>().x)) return;
+        if (float.IsPositiveInfinity(touchControlMap.Touch.Touch.ReadValue<Vector2>().x)) return;
+        if (float.IsNegativeInfinity(touchControlMap.Touch.Touch.ReadValue<Vector2>().x)) return;
 
-        //Debug.Log("performed" + touchControls.Touch.PrimaryTouchPosition.ReadValue<Vector2>());
-        OnTouchActionPerformed?.Invoke(touchControls.Touch.Touch.ReadValue<Vector2>(), (float)context.startTime);
+        OnTouchActionPerformed?.Invoke(touchControlMap.Touch.Touch.ReadValue<Vector2>());
     }
     private void CancelTouch(InputAction.CallbackContext context)
     {
-        if (float.IsPositiveInfinity(touchControls.Touch.Touch.ReadValue<Vector2>().x)) return;
-        if (float.IsNegativeInfinity(touchControls.Touch.Touch.ReadValue<Vector2>().x)) return;
+        if (float.IsPositiveInfinity(touchControlMap.Touch.Touch.ReadValue<Vector2>().x)) return;
+        if (float.IsNegativeInfinity(touchControlMap.Touch.Touch.ReadValue<Vector2>().x)) return;
 
-        //Debug.Log("ended" + touchControls.Touch.PrimaryTouchPosition.ReadValue<Vector2>());
-
-        OnTouchActionEnded?.Invoke(touchControls.Touch.Touch.ReadValue<Vector2>(), (float)context.startTime);
+        OnTouchActionEnded?.Invoke(touchControlMap.Touch.Touch.ReadValue<Vector2>());
     }
-    private void StartSwerve(InputAction.CallbackContext context)
+    private void PerformSwerve(InputAction.CallbackContext context)
     {
-        //Debug.Log("swerved" + touchControls.Touch.Swerve.ReadValue<Vector2>());
-        OnSwerveStarted?.Invoke(touchControls.Touch.Swerve.ReadValue<Vector2>(), (float)context.startTime);
+        //Debug.Log("swerved" + touchControlMap.Touch.Swerve.ReadValue<Vector2>());
+        if (float.IsPositiveInfinity(touchControlMap.Touch.Swerve.ReadValue<Vector2>().x)) return;
+        if (float.IsNegativeInfinity(touchControlMap.Touch.Swerve.ReadValue<Vector2>().x)) return;
+
+        OnSwervePerformed?.Invoke(touchControlMap.Touch.Swerve.ReadValue<Vector2>()/*, (float)context.startTime*/);
     }
 
 

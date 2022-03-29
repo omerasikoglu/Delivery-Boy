@@ -168,6 +168,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 2045183567}
   cam: {fileID: 963194227}
+  worldPosZ: 0
+  worldPos: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +490,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 2045183567}
   cam: {fileID: 963194227}
+  worldPosZ: 0
+  worldPos: {x: 0, y: 0, z: 0}
 --- !u!65 &1037124021
 BoxCollider:
   m_ObjectHideFlags: 0

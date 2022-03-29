@@ -21,7 +21,7 @@ public static class UtilsClass
         position.z = posZ;
         return position;
     }
-    public static Vector3 GetScreenToWorldPoint(Vector3? objectPosition = null, float posZ = 0f)
+    public static Vector3 GetScreenToWorldPoint(Vector3? objectPosition = null, float worldPosZ = 0f)
     {
         // sol-alt Dünyada neyse o -299 bile olabilir kamera konumu önemsiz. Dünyadaki 0,0,0 noktası origin olur
         mainCamera = Camera.main;
@@ -30,7 +30,7 @@ public static class UtilsClass
             mainCamera.ScreenToWorldPoint(Input.mousePosition) : mainCamera.ScreenToWorldPoint((Vector3)objectPosition);
 
         Debug.DrawRay(position, mainCamera.transform.forward * 1000, Color.red);
-        position.z = posZ;
+        position.z = worldPosZ;
         return position;
     }
     public static Vector3 GetWorldToScreenPoint(Vector3? objectPosition = null, float posZ = 0f)
