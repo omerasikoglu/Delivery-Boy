@@ -7,23 +7,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    //[SerializeField, Foldout("[Input]")] private PlayerInput playerInput;
     [SerializeField, Foldout("[Input]")] private InputManager inputManager;
     [SerializeField] private Camera cam;
 
 
-    public Vector3 swerveInputScreenOffsetCoord;
-    public Vector3 goScreenCoord;
-    public Vector3 goNextPosCoord;
-    public Vector3 worldOffsetCoord;
-    public float screenPosZ;
+    public Vector3 goCoord;
+    public Vector3 worldOffsetPos;
 
     private void Awake()
     {
-        //playerýnput.onactiontriggered += playerýnput_onactiontriggered;
-        //inputmanager.onstarttouchaction += move;
-        //inputmanager.onendtouchaction += move;
-
         inputManager.OnTouchActionStarted += InputManagerOnTouchActionStarted;
         inputManager.OnTouchActionEnded += InputManagerOnTouchActionEnded;
         inputManager.OnTouchActionPerformed += InputManagerOnTouchActionPerformed;
@@ -31,32 +23,23 @@ public class PlayerController : MonoBehaviour
         inputManager.OnSwervePerformed += InputManagerOnSwervePerformed;
     }
 
-    private void InputManagerOnSwervePerformed(Vector2 screenOffset)
+    private void InputManagerOnSwervePerformed(Vector2 swerveOffset)
     {
-        var goPosition = gameObject.transform.position;
-        screenPosZ = UtilsClass.GetWorldToScreenPoint(goPosition).z;
+        //coord:ekranda, pos:dünyada
 
-        //Debug.Log("screenOffset" + screenOffset.x + " | " + screenOffset.y);
-        swerveInputScreenOffsetCoord = new Vector3(screenOffset.x, screenOffset.y, screenPosZ);
+        var goWorldPosition = gameObject.transform.position;
 
-        goScreenCoord = cam.WorldToScreenPoint(goPosition);
-        //goScreenCoord.z = screenPosZ;
+        goCoord = UtilsClass.GetWorldToScreenPoint(goWorldPosition); //Z'si 10 ekranda 
 
-        goNextPosCoord = goScreenCoord + swerveInputScreenOffsetCoord;
-        //goNextPosCoord = new Vector3(goScreenCoord.x + swerveInputScreenOffsetCoord.x,
-        //    goScreenCoord.y + swerveInputScreenOffsetCoord.y);
+        worldOffsetPos = UtilsClass.GetScreenToWorldPoint(goCoord + (Vector3)swerveOffset); //offsette z deðiþmez
 
-        worldOffsetCoord = cam.ScreenToWorldPoint(goNextPosCoord);
-        worldOffsetCoord.z = screenPosZ;
-
-        transform.position = worldOffsetCoord;
-        //Debug.Log(cam.ScreenToWorldPoint(swerveInputScreenOffsetCoord));
+        transform.position = worldOffsetPos;
 
     }
 
     private void InputManagerOnTouchActionStarted(Vector2 arg1)
     {
-        //Move(screenOffset);
+        //Move(swerveOffset);
     }
     private void InputManagerOnTouchActionPerformed(Vector2 obj)
     {
@@ -65,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     private void InputManagerOnTouchActionEnded(Vector2 arg1)
     {
-        //Move(screenOffset);
+        //Move(swerveOffset);
     }
 
     public void Move(Vector2 screenPosition)
