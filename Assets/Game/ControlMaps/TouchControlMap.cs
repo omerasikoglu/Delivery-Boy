@@ -28,7 +28,7 @@ public partial class @TouchControlMap : IInputActionCollection2, IDisposable
             ""id"": ""d1669231-1195-41d8-b874-207abe226d37"",
             ""actions"": [
                 {
-                    ""name"": ""Touch"",
+                    ""name"": ""TouchPos"",
                     ""type"": ""PassThrough"",
                     ""id"": ""09509a72-138b-4e20-ad94-91b7a9ab7545"",
                     ""expectedControlType"": ""Vector2"",
@@ -44,6 +44,15 @@ public partial class @TouchControlMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""IsTouching"",
+                    ""type"": ""Button"",
+                    ""id"": ""14cd3ef2-854d-4b66-a7a6-6334304088ac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -54,7 +63,7 @@ public partial class @TouchControlMap : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Touch"",
+                    ""action"": ""TouchPos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -68,6 +77,17 @@ public partial class @TouchControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""Swerve"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b31595c-3067-4579-a2a1-a3ab50ed1455"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IsTouching"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -76,8 +96,9 @@ public partial class @TouchControlMap : IInputActionCollection2, IDisposable
 }");
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
-        m_Touch_Touch = m_Touch.FindAction("Touch", throwIfNotFound: true);
+        m_Touch_TouchPos = m_Touch.FindAction("TouchPos", throwIfNotFound: true);
         m_Touch_Swerve = m_Touch.FindAction("Swerve", throwIfNotFound: true);
+        m_Touch_IsTouching = m_Touch.FindAction("IsTouching", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -137,14 +158,16 @@ public partial class @TouchControlMap : IInputActionCollection2, IDisposable
     // Touch
     private readonly InputActionMap m_Touch;
     private ITouchActions m_TouchActionsCallbackInterface;
-    private readonly InputAction m_Touch_Touch;
+    private readonly InputAction m_Touch_TouchPos;
     private readonly InputAction m_Touch_Swerve;
+    private readonly InputAction m_Touch_IsTouching;
     public struct TouchActions
     {
         private @TouchControlMap m_Wrapper;
         public TouchActions(@TouchControlMap wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Touch => m_Wrapper.m_Touch_Touch;
+        public InputAction @TouchPos => m_Wrapper.m_Touch_TouchPos;
         public InputAction @Swerve => m_Wrapper.m_Touch_Swerve;
+        public InputAction @IsTouching => m_Wrapper.m_Touch_IsTouching;
         public InputActionMap Get() { return m_Wrapper.m_Touch; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -154,29 +177,36 @@ public partial class @TouchControlMap : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_TouchActionsCallbackInterface != null)
             {
-                @Touch.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch;
-                @Touch.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch;
-                @Touch.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch;
+                @TouchPos.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchPos;
+                @TouchPos.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchPos;
+                @TouchPos.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchPos;
                 @Swerve.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnSwerve;
                 @Swerve.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnSwerve;
                 @Swerve.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnSwerve;
+                @IsTouching.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnIsTouching;
+                @IsTouching.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnIsTouching;
+                @IsTouching.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnIsTouching;
             }
             m_Wrapper.m_TouchActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Touch.started += instance.OnTouch;
-                @Touch.performed += instance.OnTouch;
-                @Touch.canceled += instance.OnTouch;
+                @TouchPos.started += instance.OnTouchPos;
+                @TouchPos.performed += instance.OnTouchPos;
+                @TouchPos.canceled += instance.OnTouchPos;
                 @Swerve.started += instance.OnSwerve;
                 @Swerve.performed += instance.OnSwerve;
                 @Swerve.canceled += instance.OnSwerve;
+                @IsTouching.started += instance.OnIsTouching;
+                @IsTouching.performed += instance.OnIsTouching;
+                @IsTouching.canceled += instance.OnIsTouching;
             }
         }
     }
     public TouchActions @Touch => new TouchActions(this);
     public interface ITouchActions
     {
-        void OnTouch(InputAction.CallbackContext context);
+        void OnTouchPos(InputAction.CallbackContext context);
         void OnSwerve(InputAction.CallbackContext context);
+        void OnIsTouching(InputAction.CallbackContext context);
     }
 }

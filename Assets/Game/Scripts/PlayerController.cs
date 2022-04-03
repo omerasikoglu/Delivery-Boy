@@ -8,56 +8,48 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField, Foldout("[Input]")] private InputManager inputManager;
-    [SerializeField] private Camera cam;
+    [SerializeField, Foldout("[Input]")] private bool isVerticalSwerveActive, isHorizontalSwerveActive;
 
-
-    public Vector3 goCoord;
-    public Vector3 worldOffsetPos;
+    [SerializeField] private Vector3 goCoord, worldOffsetPos;
+    [SerializeField] private bool isTouchingObject;
 
     private void Awake()
     {
-        inputManager.OnTouchActionStarted += InputManagerOnTouchActionStarted;
-        inputManager.OnTouchActionEnded += InputManagerOnTouchActionEnded;
-        inputManager.OnTouchActionPerformed += InputManagerOnTouchActionPerformed;
-
-        inputManager.OnSwervePerformed += InputManagerOnSwervePerformed;
+        inputManager.OnSwervePerformed += OnSwervePerformed;
+        inputManager.OnTouchPerformed += OnTouchPerformed;
+        inputManager.OnTouchEnded += OnTouchEnded;
     }
 
-    private void InputManagerOnSwervePerformed(Vector2 swerveOffset)
+    private void OnTouchEnded()
     {
-        //coord:ekranda, pos:dünyada
+        isTouchingObject = false;
+    }
 
-        var goWorldPosition = gameObject.transform.position;
+    private void OnTouchPerformed(Vector2 coord)
+    {
+        isTouchingObject = true;
+    }
+
+    private void OnSwervePerformed(Vector2 swerveOffset)
+    {
+        if (!isTouchingObject) return;
+        //coord:ekranda, pos:dünyada, offsette z deðiþmez
+
+        Vector3 goWorldPosition = gameObject.transform.position;
 
         goCoord = UtilsClass.GetWorldToScreenPoint(goWorldPosition); //Z'si 10 ekranda 
+        worldOffsetPos = UtilsClass.GetScreenToWorldPoint(goCoord + (Vector3)swerveOffset);
 
-        worldOffsetPos = UtilsClass.GetScreenToWorldPoint(goCoord + (Vector3)swerveOffset); //offsette z deðiþmez
-
-        transform.position = worldOffsetPos;
-
+        if (isVerticalSwerveActive) VerticalSwerve();
+        if (isHorizontalSwerveActive) HorizontalSwerve();
     }
 
-    private void InputManagerOnTouchActionStarted(Vector2 arg1)
+    private void VerticalSwerve()
     {
-        //Move(swerveOffset);
+        transform.position = new Vector3(transform.position.x, worldOffsetPos.y, transform.position.z);
     }
-    private void InputManagerOnTouchActionPerformed(Vector2 obj)
+    private void HorizontalSwerve()
     {
-        //Move(obj);
-    }
-
-    private void InputManagerOnTouchActionEnded(Vector2 arg1)
-    {
-        //Move(swerveOffset);
-    }
-
-    public void Move(Vector2 screenPosition)
-    {
-        Vector3 screenCoordinates = new Vector3(screenPosition.x, screenPosition.y, cam.nearClipPlane);
-        Vector3 worldCoordinates = cam.ScreenToWorldPoint(screenCoordinates);
-        worldCoordinates.z = 0f;
-        //position = worldCoordinates;
-        transform.position = worldCoordinates;
-
+        transform.position = new Vector3(worldOffsetPos.x, transform.position.y, transform.position.z);
     }
 }

@@ -6,7 +6,7 @@
             "id": "d1669231-1195-41d8-b874-207abe226d37",
             "actions": [
                 {
-                    "name": "Touch",
+                    "name": "TouchPos",
                     "type": "PassThrough",
                     "id": "09509a72-138b-4e20-ad94-91b7a9ab7545",
                     "expectedControlType": "Vector2",
@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "IsTouching",
+                    "type": "Button",
+                    "id": "14cd3ef2-854d-4b66-a7a6-6334304088ac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -32,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Touch",
+                    "action": "TouchPos",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Swerve",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b31595c-3067-4579-a2a1-a3ab50ed1455",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "IsTouching",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
